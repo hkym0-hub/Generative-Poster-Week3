@@ -16,20 +16,12 @@ st.caption("Week 2 • Arts & Advanced Big Data")
 
 # --- Sidebar Controls ---
 st.sidebar.header("🎛️ Controls")
-
 n_layers = st.sidebar.slider("Number of Layers", 3, 20, 8)
 random_seed = st.sidebar.number_input("Random Seed (for reproducibility)", value=0, step=1)
-
 palette_option = st.sidebar.selectbox(
     "🎨 Color Palette",
     ["Random", "Pastel", "Vibrant", "Earthy", "Cool Blues", "Warm Sunset"]
 )
-
-wobble_min = st.sidebar.slider("Minimum Wobble", 0.0, 0.5, 0.05, 0.01)
-wobble_max = st.sidebar.slider("Maximum Wobble", 0.0, 0.5, 0.25, 0.01)
-radius_min = st.sidebar.slider("Minimum Radius", 0.05, 0.5, 0.15, 0.01)
-radius_max = st.sidebar.slider("Maximum Radius", 0.05, 0.5, 0.45, 0.01)
-
 generate = st.sidebar.button("🎲 Generate Poster")
 
 # --- Functions ---
@@ -66,11 +58,10 @@ if generate or random_seed >= 0:
     plt.gca().set_facecolor((0.98, 0.98, 0.97))
 
     palette = get_palette(palette_option, k=6)
-
     for i in range(n_layers):
         cx, cy = random.random(), random.random()
-        rr = random.uniform(radius_min, radius_max)
-        x, y = blob(center=(cx, cy), r=rr, wobble=random.uniform(wobble_min, wobble_max))
+        rr = random.uniform(0.15, 0.45)
+        x, y = blob(center=(cx, cy), r=rr, wobble=random.uniform(0.05, 0.25))
         color = random.choice(palette)
         alpha = random.uniform(0.25, 0.6)
         plt.fill(x, y, color=color, alpha=alpha, edgecolor=(0, 0, 0, 0))

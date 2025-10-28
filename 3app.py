@@ -22,6 +22,10 @@ palette_option = st.sidebar.selectbox(
     "🎨 Color Palette",
     ["Random", "Pastel", "Vibrant", "Earthy", "Cool Blues", "Warm Sunset"]
 )
+# New wobble sliders
+wobble_min = st.sidebar.slider("Minimum Wobble", 0.0, 1.0, 0.05, 0.01)
+wobble_max = st.sidebar.slider("Maximum Wobble", 0.0, 1.0, 0.25, 0.01)
+
 generate = st.sidebar.button("🎲 Generate Poster")
 
 # --- Functions ---
@@ -61,7 +65,8 @@ if generate or random_seed >= 0:
     for i in range(n_layers):
         cx, cy = random.random(), random.random()
         rr = random.uniform(0.15, 0.45)
-        x, y = blob(center=(cx, cy), r=rr, wobble=random.uniform(0.05, 0.25))
+        wobble_val = random.uniform(wobble_min, wobble_max)  # <-- use sliders
+        x, y = blob(center=(cx, cy), r=rr, wobble=wobble_val)
         color = random.choice(palette)
         alpha = random.uniform(0.25, 0.6)
         plt.fill(x, y, color=color, alpha=alpha, edgecolor=(0, 0, 0, 0))

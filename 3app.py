@@ -25,7 +25,6 @@ palette_option = st.sidebar.selectbox(
     ["Random", "Pastel", "Vibrant", "Earthy", "Cool Blues", "Warm Sunset"]
 )
 
-# --- New Sliders for radius and wobble ---
 wobble_min = st.sidebar.slider("Minimum Wobble", 0.0, 0.5, 0.05, 0.01)
 wobble_max = st.sidebar.slider("Maximum Wobble", 0.0, 0.5, 0.25, 0.01)
 radius_min = st.sidebar.slider("Minimum Radius", 0.05, 0.5, 0.15, 0.01)
@@ -61,10 +60,15 @@ def blob(center=(0.5, 0.5), r=0.3, points=200, wobble=0.15):
 if generate or random_seed >= 0:
     random.seed(random_seed)
     plt.figure(figsize=(7,10))
-    plt.axis('off')
 
-    # background
-    plt.gca().set_facecolor((0.98, 0.98, 0.97))
+    # Turn off axes completely
+    ax = plt.gca()
+    ax.set_facecolor((0.98, 0.98, 0.97))
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_xticklabels([])
+    ax.set_yticklabels([])
+    ax.set_frame_on(False)
 
     palette = get_palette(palette_option, k=6)
 
@@ -77,8 +81,8 @@ if generate or random_seed >= 0:
         plt.fill(x, y, color=color, alpha=alpha, edgecolor=(0, 0, 0, 0))
 
     # text labels
-    plt.text(0.05, 0.95, "Generative Poster", fontsize=18, weight='bold', transform=plt.gca().transAxes)
-    plt.text(0.05, 0.91, "Week 2 • Arts & Advanced Big Data", fontsize=11, transform=plt.gca().transAxes)
+    plt.text(0.05, 0.95, "Generative Poster", fontsize=18, weight='bold', transform=ax.transAxes)
+    plt.text(0.05, 0.91, "Week 2 • Arts & Advanced Big Data", fontsize=11, transform=ax.transAxes)
 
     plt.xlim(0,1)
     plt.ylim(0,1)

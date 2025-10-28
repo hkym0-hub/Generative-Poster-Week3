@@ -17,6 +17,7 @@ st.caption("Week 2 • Arts & Advanced Big Data")
 # --- Sidebar Controls ---
 st.sidebar.header("🎛️ Controls")
 
+# User-controlled sliders
 n_layers = st.sidebar.slider("Number of Layers", 3, 20, 8)
 random_seed = st.sidebar.number_input("Random Seed (for reproducibility)", value=0, step=1)
 
@@ -78,14 +79,35 @@ if generate or random_seed >= 0:
     # background
     plt.gca().set_facecolor((0.98, 0.98, 0.97))
 
+    # --- Adjust parameters based on style ---
+    if poster_style == "Monochrome":
+        n_layers = max(3, n_layers - 2)
+        wobble_min_adj, wobble_max_adj = 0.05, 0.15
+        alpha_min, alpha_max = 0.3, 0.5
+        radius_min_adj, radius_max_adj = 0.1, 0.3
+    elif poster_style == "Noise Touch":
+        n_layers = max(10, n_layers + 5)
+        wobble_min_adj, wobble_max_adj = 0.2, 0.5
+        alpha_min, alpha_max = 0.2, 0.7
+        radius_min_adj, radius_max_adj = 0.05, 0.45
+    elif poster_style == "Minimal":
+        n_layers = min(5, n_layers)
+        wobble_min_adj, wobble_max_adj = 0.05, 0.1
+        alpha_min, alpha_max = 0.3, 0.4
+        radius_min_adj, radius_max_adj = 0.1, 0.3
+    else:  # Vivid
+        wobble_min_adj, wobble_max_adj = wobble_min, wobble_max
+        radius_min_adj, radius_max_adj = radius_min, radius_max
+        alpha_min, alpha_max = 0.25, 0.6
+
     palette = get_palette(palette_option, k=6, style=poster_style)
 
     for i in range(n_layers):
         cx, cy = random.random(), random.random()
-        rr = random.uniform(radius_min, radius_max)
-        x, y = blob(center=(cx, cy), r=rr, wobble=random.uniform(wobble_min, wobble_max))
+        rr = random.uniform(radius_min_adj, radius_max_adj)
+        x, y = blob(center=(cx, cy), r=rr, wobble=random.uniform(wobble_min_adj, wobble_max_adj))
         color = random.choice(palette)
-        alpha = random.uniform(0.25, 0.6)
+        alpha = random.uniform(alpha_min, alpha_max)
         plt.fill(x, y, color=color, alpha=alpha, edgecolor=(0, 0, 0, 0))
 
     # text labels
